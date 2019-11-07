@@ -1,7 +1,8 @@
 #Wenhsuan Hung, 6.11.2019, this is create_learning2014.R file
-#data includes age, attitude, points, gender, are all integers
+#data includes 183 observations and 60 variables, showing age, attitude, points, gender, are all integers
 lrn14 <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
-
+lrn14
+str(lrn14)
 # create column 'attitude' by scaling the column "Attitude"
 lrn14$attitude <- lrn14$Attitude / 10
 
