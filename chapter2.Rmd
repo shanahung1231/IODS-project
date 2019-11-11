@@ -31,7 +31,7 @@ p
 The plots show us the distribution between two variables, and each varible. They also show us data distribytion by gender. I found that there is a positive correlation between attitude and points (0.43), deep and surf has negative correlation. From the box charts, I found that the data of age, deep questions is more condensed. However, the value age has lots of outliers. 
 
 
-**step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.**  Show a summary of the fitted model and comment and interpret the results. Explain and interpret the statistical test related to the model parameters.Using a summary of your fitted model, explain the relationship between the chosen explanatory variables and the target variable (interpret the model parameters). Explain and interpret the multiple R squared of the model.
+**step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.** 
 
 ```{r，echo = FALSE}
 # create an plot matrix with ggpairs()
@@ -45,6 +45,7 @@ summary(my_model2)
 #p value is 2.521e-08, which is much less than 0.01, attitude + deep + stra is significant to points
 ```
 
+I choose points as Y value, and attitude, deep question, strategic question as X value to create a multiple regression. According to the summary result, we can see that p-value is 2.521e-08, which is smaller than 0.05, hence we can say that the model is reasonable. However, since standard error is quite large, the estimation isn't too precise. Though multiple R-squared, adjusted R-squared are both low, which are 0.2097,	0.195, we couldn't underestimate the model's explanatory ability, since lots of factors should be taken into account, and that R-squared isn't the only element to consider a regresison model.
 
 **step 4: Produce Residuals vs Fitted plot, Normal QQ-plot and Residuals vs Leverage plot.** 
 
@@ -55,16 +56,15 @@ my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
 par(mfrow = c(2,2))
 plot(my_model2, which = c(1,2,5))
 ```
+
 1.Residuals vs Fitted plot:
 A “good” residuals vs. fitted plot should has no obvious outliers, and be generally symmetrically distributed around the 0 line without particularly large residuals. From the plot, we can see that X and Y values are not correlated, hence this is a suitable model.
 
 2.Normal QQ-plot:
-From 
+According to the theory, if both sets of quantiles come from the same distribution, we should see the points forming a line that’s roughly straight. Also, the points should fall approximately along the 45 degree reference line. From the plot, we could see that the points fall approximately on the 45-degree reference line, which means that the data sets come from similar distributions.
 
 3.Residuals vs Leverage plot:
-
-
-
+This plot helps identify influential data points on the model. The points which are outside the red dashed Cook’s distance line are the points that would be influential in the model, and removing them would likely noticeably alter the regression results. 
 
 
 
