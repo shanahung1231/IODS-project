@@ -1,7 +1,72 @@
-# Insert chapter 2 title here
+# Regression and model validation
 
 *Describe the work you have done this week and summarize your learning.*
 
 - Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.
 - Assume the reader has no previous knowledge of your data or the more advanced methods you are using.
+
+The is a data with 60 variables. Through analyzing the data, we hope to undertand what are the important variables which is related to **exam points**.
+
+**step 1:Data Cleaning **
+To analyze the data, the first step is to clean the data (scale the "Attitude" column), and select the information we are interested in. Since there are too many variables (183 observations and 60 variables), and this would make it hard to make analysis, I combine some of the variables, and put them in three big categories, which are deep, surface, strategic. After that, I average the value of deep_columns, surface_columns, strategic_columns.In the end, I keep the rows where points is greater than zero.These are what I do in "data cleaning" step.
+
+
+**step 2: Show a graphical overview of the data and show summaries of the variables in the data.** 
+
+After data cleaning step, the data now has 166 observations and 7 variables
+and I start drawing some plots.
+From the summary, we see below information, which shows the minimum, maximum, mean, quartile value of each variable(age, attitude, deep)
+
+```{r，echo = FALSE}
+# draw a scatter plot matrix of the variables in students2014.
+# [-1] excludes the first column (gender)
+pairs(students2014[-1], col = students2014$gender)
+# create a more advanced plot matrix with ggpairs()
+p <- ggpairs(students2014, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+# draw the plot
+p
+```
+
+The plots show us the distribution between two variables, and each varible. They also show us data distribytion by gender. I found that there is a positive correlation between attitude and points (0.43), deep and surf has negative correlation. From the box charts, I found that the data of age, deep questions is more condensed. However, the value age has lots of outliers. 
+
+
+**step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.**  Show a summary of the fitted model and comment and interpret the results. Explain and interpret the statistical test related to the model parameters.Using a summary of your fitted model, explain the relationship between the chosen explanatory variables and the target variable (interpret the model parameters). Explain and interpret the multiple R squared of the model.
+
+```{r，echo = FALSE}
+# create an plot matrix with ggpairs()
+ggpairs(students2014, lower = list(combo = wrap("facethist", bins = 20)))
+
+# create a regression model with multiple explanatory variables
+my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
+my_model2
+# print out a summary of the model
+summary(my_model2)
+#p value is 2.521e-08, which is much less than 0.01, attitude + deep + stra is significant to points
+```
+
+
+**step 4: Produce Residuals vs Fitted plot, Normal QQ-plot and Residuals vs Leverage plot.** 
+
+```{r，echo = FALSE}
+# create a regression model with multiple explanatory variables
+my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
+# draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
+par(mfrow = c(2,2))
+plot(my_model2, which = c(1,2,5))
+```
+1.Residuals vs Fitted plot:
+A “good” residuals vs. fitted plot should has no obvious outliers, and be generally symmetrically distributed around the 0 line without particularly large residuals. From the plot, we can see that X and Y values are not correlated, hence this is a suitable model.
+
+2.Normal QQ-plot:
+From 
+
+3.Residuals vs Leverage plot:
+
+
+
+
+
+
+
+
