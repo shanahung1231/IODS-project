@@ -40,6 +40,9 @@ ggpairs(students2014, lower = list(combo = wrap("facethist", bins = 20)))
 # create a regression model with multiple explanatory variables
 my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
 my_model2
+```
+
+```{r echo = FALSE}
 # print out a summary of the model
 summary(my_model2)
 #p value is 2.521e-08, which is much less than 0.01, attitude + deep + stra is significant to points
