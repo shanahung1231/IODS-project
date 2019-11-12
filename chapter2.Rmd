@@ -18,7 +18,7 @@ After data cleaning step, the data now has 166 observations and 7 variables
 and I start drawing some plots.
 From the summary, we see below information, which shows the minimum, maximum, mean, quartile value of each variable(age, attitude, deep)
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 # draw a scatter plot matrix of the variables in students2014.
 # [-1] excludes the first column (gender)
 pairs(students2014[-1], col = students2014$gender)
@@ -33,7 +33,7 @@ The plots show us the distribution between two variables, and each varible. They
 
 **step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.** 
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 # create an plot matrix with ggpairs()
 ggpairs(students2014, lower = list(combo = wrap("facethist", bins = 20)))
 
@@ -49,7 +49,7 @@ I choose points as Y value, and attitude, deep question, strategic question as X
 
 **step 4: Produce Residuals vs Fitted plot, Normal QQ-plot and Residuals vs Leverage plot.** 
 
-```{r, echo = FALSE}
+```{r echo = FALSE}
 # create a regression model with multiple explanatory variables
 my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
 # draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
