@@ -14,10 +14,14 @@ To analyze the data, the first step is to clean the data (scale the "Attitude" c
 
 **step 2: Show a graphical overview of the data and show summaries of the variables in the data.** 
 
-After data cleaning step, the data now has 166 observations and 7 variables
-and I start drawing some plots.
-From the summary, we see below information, which shows the minimum, maximum, mean, quartile value of each variable(age, attitude, deep)
+```{r echo = FALSE}
+students2014  <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/learning2014.txt", sep=",", header=TRUE)
+#data includes 166 observations and 7 variables, showing information about gender(F, M), age/points(int), attitude/deep/stra/ surf(num)
 
+# access the GGally and ggplot2 libraries
+library(GGally)
+library(ggplot2)
+```
 ```{r echo = FALSE}
 # draw a scatter plot matrix of the variables in students2014.
 # [-1] excludes the first column (gender)
@@ -26,10 +30,14 @@ pairs(students2014[-1], col = students2014$gender)
 p <- ggpairs(students2014, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
 # draw the plot
 p
+summary(students2014)
 ```
+After data cleaning step, the data now has 166 observations and 7 variables
+and I start drawing some plots.
 
 The plots show us the distribution between two variables, and each varible. They also show us data distribytion by gender. I found that there is a positive correlation between attitude and points (0.43), deep and surf has negative correlation. From the box charts, I found that the data of age, deep questions is more condensed. However, the value age has lots of outliers. 
 
+From the summary, we see below information, which shows the minimum, maximum, mean, quartile value of each variable(age, attitude, deep)
 
 **step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.** 
 
@@ -42,8 +50,6 @@ my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
 
 my_model2
 ```
-
-
 
 ```{r echo = FALSE}
 # print out a summary of the model
