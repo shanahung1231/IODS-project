@@ -186,7 +186,8 @@ summary {
 <ul>
 <li><a href="#about-the-project">About the project</a></li>
 <li><a href="#hi-i-am-wenhsuan">Hi, I am Wenhsuan!</a></li>
-<li><a href="#insert-chapter-2-title-here">Insert chapter 2 title here</a></li>
+<li><a href="#regression-and-model-validation">Regression and model validation</a></li>
+<li><a href="#create-a-regression-model-with-multiple-explanatory-variables">create a regression model with multiple explanatory variables</a></li>
 </ul>
 </div>
 
@@ -201,14 +202,32 @@ summary {
 <p>*<a href="https://github.com/shanahung1231/IODS-project">Github repository</a></p>
 <hr />
 </div>
-<div id="insert-chapter-2-title-here" class="section level1">
-<h1>Insert chapter 2 title here</h1>
+<div id="regression-and-model-validation" class="section level1">
+<h1>Regression and model validation</h1>
 <p><em>Describe the work you have done this week and summarize your learning.</em></p>
 <ul>
 <li>Describe your work and results clearly.</li>
 <li>Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods.</li>
 <li>Assume the reader has no previous knowledge of your data or the more advanced methods you are using.</li>
 </ul>
+<p>The is a data with 60 variables. Through analyzing the data, we hope to undertand what are the important variables which is related to <strong>exam points</strong>.</p>
+<p><strong>step 1:Data Cleaning </strong> To analyze the data, the first step is to clean the data (scale the “Attitude” column), and select the information we are interested in. Since there are too many variables (183 observations and 60 variables), and this would make it hard to make analysis, I combine some of the variables, and put them in three big categories, which are deep, surface, strategic. After that, I average the value of deep_columns, surface_columns, strategic_columns.In the end, I keep the rows where points is greater than zero.These are what I do in “data cleaning” step.</p>
+<p><strong>step 2: Show a graphical overview of the data and show summaries of the variables in the data.</strong></p>
+<p>After data cleaning step, the data now has 166 observations and 7 variables and I start drawing some plots. From the summary, we see below information, which shows the minimum, maximum, mean, quartile value of each variable(age, attitude, deep)</p>
+<p><code>{r，echo = FALSE} # draw a scatter plot matrix of the variables in students2014. # [-1] excludes the first column (gender) pairs(students2014[-1], col = students2014$gender) # create a more advanced plot matrix with ggpairs() p &lt;- ggpairs(students2014, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap(&quot;facethist&quot;, bins = 20))) # draw the plot p</code></p>
+<p>The plots show us the distribution between two variables, and each varible. They also show us data distribytion by gender. I found that there is a positive correlation between attitude and points (0.43), deep and surf has negative correlation. From the box charts, I found that the data of age, deep questions is more condensed. However, the value age has lots of outliers.</p>
+<p><strong>step 3:Choose attitude, deep question, strategic question variables as explanatory variables and fit a regression model where exam points is the target (dependent) variable.</strong></p>
+<p>```{r，echo = FALSE} # create an plot matrix with ggpairs() ggpairs(students2014, lower = list(combo = wrap(“facethist”, bins = 20)))</p>
+</div>
+<div id="create-a-regression-model-with-multiple-explanatory-variables" class="section level1">
+<h1>create a regression model with multiple explanatory variables</h1>
+<p>my_model2 &lt;- lm(points ~ attitude + deep + stra, data = students2014) my_model2 # print out a summary of the model summary(my_model2) #p value is 2.521e-08, which is much less than 0.01, attitude + deep + stra is significant to points ```</p>
+<p>I choose points as Y value, and attitude, deep question, strategic question as X value to create a multiple regression. According to the summary result, we can see that p-value is 2.521e-08, which is smaller than 0.05, hence we can say that the model is reasonable. However, since standard error is quite large, the estimation isn’t too precise. Though multiple R-squared, adjusted R-squared are both low, which are 0.2097, 0.195, we couldn’t underestimate the model’s explanatory ability, since lots of factors should be taken into account, and that R-squared isn’t the only element to consider a regresison model.</p>
+<p><strong>step 4: Produce Residuals vs Fitted plot, Normal QQ-plot and Residuals vs Leverage plot.</strong></p>
+<p><code>{r，echo = FALSE} # create a regression model with multiple explanatory variables my_model2 &lt;- lm(points ~ attitude + deep + stra, data = students2014) # draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5 par(mfrow = c(2,2)) plot(my_model2, which = c(1,2,5))</code></p>
+<p>1.Residuals vs Fitted plot: A “good” residuals vs. fitted plot should has no obvious outliers, and be generally symmetrically distributed around the 0 line without particularly large residuals. From the plot, we can see that X and Y values are not correlated, hence this is a suitable model.</p>
+<p>2.Normal QQ-plot: According to the theory, if both sets of quantiles come from the same distribution, we should see the points forming a line that’s roughly straight. Also, the points should fall approximately along the 45 degree reference line. From the plot, we could see that the points fall approximately on the 45-degree reference line, which means that the data sets come from similar distributions.</p>
+<p>3.Residuals vs Leverage plot: This plot helps identify influential data points on the model. The points which are outside the red dashed Cook’s distance line are the points that would be influential in the model, and removing them would likely noticeably alter the regression results.</p>
 <hr />
 </div>
 

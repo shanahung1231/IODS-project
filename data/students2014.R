@@ -34,7 +34,7 @@ summary(my_model2)
 
 # create a regression model with multiple explanatory variables
 my_model2 <- lm(points ~ attitude + deep + stra, data = students2014)
-
+my_model2
 # draw diagnostic plots using the plot() function. Choose the plots 1, 2 and 5
 par(mfrow = c(2,2))
 plot(my_model2, which = c(1,2,5))

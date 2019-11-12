@@ -3,6 +3,7 @@
 lrn14 <- read.table("http://www.helsinki.fi/~kvehkala/JYTmooc/JYTOPKYS3-data.txt", sep="\t", header=TRUE)
 lrn14
 str(lrn14)
+
 # create column 'attitude' by scaling the column "Attitude"
 lrn14$attitude <- lrn14$Attitude / 10
 
@@ -17,13 +18,11 @@ strategic_questions <- c("ST01","ST09","ST17","ST25","ST04","ST12","ST20","ST28"
 # select the columns related to deep learning, surface, strategic and create column 'deep', 'surf',  'stra' by averaging
 deep_columns <- select(lrn14, one_of(deep_questions))
 lrn14$deep <- rowMeans(deep_columns)
-
 surface_columns <- select(lrn14, one_of(surface_questions))
 lrn14$surf <- rowMeans(surface_columns)
 
 strategic_columns <- select(lrn14, one_of(strategic_questions))
 lrn14$stra <- rowMeans(strategic_columns)
-
 # choose a handful of columns to keep
 keep_columns <- c("gender","Age","attitude", "deep", "stra", "surf", "Points")
 
