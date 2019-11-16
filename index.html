@@ -187,6 +187,7 @@ summary {
 <li><a href="#about-the-project">About the project</a></li>
 <li><a href="#hi-i-am-wenhsuan">Hi, I am Wenhsuan!</a></li>
 <li><a href="#regression-and-model-validation">Regression and model validation</a></li>
+<li><a href="#logistic-regression">Logistic regression</a></li>
 </ul>
 </div>
 
@@ -267,6 +268,9 @@ summary {
 <p>2.Normal QQ-plot: According to the theory, if both sets of quantiles come from the same distribution, we should see the points forming a line that’s roughly straight. Also, the points should fall approximately along the 45 degree reference line. From the plot, we could see that the points fall approximately on the 45-degree reference line, which means that the data sets come from similar distributions.</p>
 <p>3.Residuals vs Leverage plot: This plot helps identify influential data points on the model. The points which are outside the red dashed Cook’s distance line are the points that would be influential in the model, and removing them would likely noticeably alter the regression results.</p>
 <hr />
+</div>
+<div id="logistic-regression" class="section level1">
+<h1>Logistic regression</h1>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following object is masked from 'package:GGally':
@@ -383,8 +387,6 @@ summary {
 ##    FALSE   248   22
 ##    TRUE     76   36</code></pre>
 <p>Since I found that “studytime” isn’t an important factor, I remove this variable, and predict a model. According to the confusion matrix, we can calculate the precision is 248/(248+76) = 0.77, and the recall is 248/ (248+22) = 0.92. This means that the model has high recall, low precision, which means that most of the positive examples are correctly recognized, but there are a lot of false positives.The average number of wrong predictions in training data is 0.2565445, and the average number of wrong predictions in the cross validation 0.2486911. This means that the error of the model is quite high(around 25%).</p>
-<p><strong>Bonus: Perform 10-fold cross-validation on your model. Does your model have better test set performance (smaller prediction error using 10-fold cross-validation) compared to the model introduced in DataCamp (which had about 0.26 error). Could you find such a model? </strong></p>
-<p><strong>Super-Bonus: Perform cross-validation to compare the performance of different logistic regression models (= different sets of predictors). Start with a very high number of predictors and explore the changes in the training and testing errors as you move to models with less predictors. Draw a graph displaying the trends of both training and testing errors by the number of predictors in the model. (0-4 points to compensate any loss of points from the above exercises)</strong></p>
 <hr />
 </div>
 
