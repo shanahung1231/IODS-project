@@ -16,7 +16,7 @@ This is ａdata discussing about students' alchohol consumption.There are 382 ob
 
 I assume that "studytime"(weekly study time), "failures"(number of past class failures), "goout"(frequency of going out with friends), "freetime"(free time after school), are important variables which have strong relationship with the consumption of alchohol. My hypothesis is that students who have less study time per week, fail more classes, go out with friends more often, have more free time after school consume more alchohol.
 
-**Numerically and graphically explore the distributions**
+**1.Numerically and graphically explore the distributions**
 ```{r echo = FALSE}
 # produce summary statistics by group
 alc %>% group_by(sex, high_use) %>% summarise(count = n(), mean_study_time = mean(studytime))
@@ -42,27 +42,28 @@ Through the summary statistics of failures group by sex and high_use, female who
 
 The boxplots shows that for variable "goout", female who consumes more alchohol  goes out more. Male also has the same same situation. The result corresponds to what i assumed. And for variable "freetime", female who consumes more alchohol has more freetime after school; however, the phenomenon is not too significant for male. The result is similiar to my assumption, but doesn't exactly match. 
 
-**Use logistic regression to statistically explore the relationship between your chosen variables and the binary high/low alcohol consumption variable as the target variable.**
+**2.Use logistic regression to statistically explore the relationship between your chosen variables and the binary high/low alcohol consumption variable as the target variable.**
 
 I choose "studytime", "failures", "goout", "freetime" as four X variables, and fit them into the model which Y is "high_use" (high/low alcohol consumption). I also separate the data into male and female, in order to dig more into the data. Below are what I found from the model.
 
-            Estimate Std. Error z value Pr(>|z|)    
-(Intercept) -2.36957    0.62399  -3.797 0.000146 
-studytime   -0.57481    0.16784  -3.425 0.000615 
-failures     0.19303    0.16899   1.142 0.253334    
-goout        0.70490    0.12039   5.855 4.77e-09 
-freetime     0.07209    0.13531   0.533 0.594163    
+```{r echo = FALSE}
+# find the model with glm()
+m <- glm(high_use ~ studytime + failures + goout + freetime, data = alc, family = "binomial")
 
-coefficient:
-(Intercept)   studytime    failures       goout    freetime 
--2.36956938 -0.57481413  0.19303395  0.70489610  0.07209276 
-  
-                    OR     2.5 %    97.5 %
-(Intercept) 0.09352099 0.0267779 0.3109179
-studytime   0.56280947 0.4007339 0.7752293
-failures    1.21292398 0.8699068 1.6929038
-goout       2.02363642 1.6081702 2.5811264
-freetime    1.07475503 0.8240334 1.4026604
+# print out a summary of the model
+summary(m)
+
+# print out the coefficients of the model
+coef(m)
+
+# compute odds ratios (OR)
+OR <- coef(m) %>% exp
+# compute confidence intervals (CI)
+CI <- confint(m) %>% exp
+
+# print out the odds ratios with their confidence intervals
+cbind(OR, CI)
+```
 
 The summary shows that standard error for "studytime", "failures", "goout", "freetime" are  0.79, 0.79, 0.74, 0.75, which are comparatively small. Smaller standard error indicates that sample mean and the population mean is more similar, which means that sample data has a stronger explanatory power to the population. The coefficient for "studytime", "failures", "goout", "freetime" are -2.94, -2.18, -1.67, -2.3, which means that these variables are all highly correlated with Y("high_use"). 
 
@@ -70,7 +71,7 @@ The odds ratio of "studytime" is 0.654（less than 1), "failures" is 1.34（high
 
 According to the above result, I now figure out that "failures", "goout", "freetime" are important variables, which are correlated with high/low alcohol consumption. Since the odds ratio of "studytime" is less than one, it isn't a factor which has high relationship with high/low alcohol consumption.
 
-**Using the variables which has statistical relationship with high/low alcohol consumption to explore the predictive power of you model. **
+**3.Using the variables which has statistical relationship with high/low alcohol consumption to explore the predictive power of you model. **
 
 ```{r echo = FALSE}
 m_new <- glm(high_use ~ failures + goout + freetime, data = alc, family = "binomial")
