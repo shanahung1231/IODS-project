@@ -316,7 +316,7 @@ summary {
 ##  $ high_use  : logi  FALSE FALSE TRUE FALSE FALSE FALSE ...</code></pre>
 <p>This is ａdata discussing about students’ alchohol consumption.There are 382 observations and 35 variables. Variables include student’s, sex, age,family size,alcohol consumption, parents’education status, job, and so on. Through the analysis, I want to study the relationships between high/low alcohol consumption and some of the other variables in the data.</p>
 <p>I assume that “studytime”(weekly study time), “failures”(number of past class failures), “goout”(frequency of going out with friends), “freetime”(free time after school), are important variables which have strong relationship with the consumption of alchohol. My hypothesis is that students who have less study time per week, fail more classes, go out with friends more often, have more free time after school consume more alchohol.</p>
-<p><strong>Numerically and graphically explore the distributions</strong></p>
+<p><strong>1.Numerically and graphically explore the distributions</strong></p>
 <pre><code>## # A tibble: 4 x 4
 ## # Groups:   sex [2]
 ##   sex   high_use count mean_study_time
@@ -337,18 +337,47 @@ summary {
 <p>According to the summary statistics of study time group by sex and high_use, female who has shorter study time tend to consume more alchohol (more than 2 times per week), and those who studies longer tend not to consume that much alchohol(less than 2 times per week). The phenomenon is same for male. The result corresponds to my assumption.</p>
 <p>Through the summary statistics of failures group by sex and high_use, female who failed more classes in the past tend to consume more alchohol, and those who failed less classes tend not to consume that much alchohol. This also happens at male. The result corresponds to my assumption.</p>
 <p>The boxplots shows that for variable “goout”, female who consumes more alchohol goes out more. Male also has the same same situation. The result corresponds to what i assumed. And for variable “freetime”, female who consumes more alchohol has more freetime after school; however, the phenomenon is not too significant for male. The result is similiar to my assumption, but doesn’t exactly match.</p>
-<p><strong>Use logistic regression to statistically explore the relationship between your chosen variables and the binary high/low alcohol consumption variable as the target variable.</strong></p>
+<p><strong>2.Use logistic regression to statistically explore the relationship between your chosen variables and the binary high/low alcohol consumption variable as the target variable.</strong></p>
 <p>I choose “studytime”, “failures”, “goout”, “freetime” as four X variables, and fit them into the model which Y is “high_use” (high/low alcohol consumption). I also separate the data into male and female, in order to dig more into the data. Below are what I found from the model.</p>
-<pre><code>        Estimate Std. Error z value Pr(&gt;|z|)    </code></pre>
-<p>(Intercept) -2.36957 0.62399 -3.797 0.000146 studytime -0.57481 0.16784 -3.425 0.000615 failures 0.19303 0.16899 1.142 0.253334<br />
-goout 0.70490 0.12039 5.855 4.77e-09 freetime 0.07209 0.13531 0.533 0.594163</p>
-<p>coefficient: (Intercept) studytime failures goout freetime -2.36956938 -0.57481413 0.19303395 0.70489610 0.07209276</p>
-<pre><code>                OR     2.5 %    97.5 %</code></pre>
-<p>(Intercept) 0.09352099 0.0267779 0.3109179 studytime 0.56280947 0.4007339 0.7752293 failures 1.21292398 0.8699068 1.6929038 goout 2.02363642 1.6081702 2.5811264 freetime 1.07475503 0.8240334 1.4026604</p>
+<pre><code>## 
+## Call:
+## glm(formula = high_use ~ studytime + failures + goout + freetime, 
+##     family = &quot;binomial&quot;, data = alc)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.8214  -0.7528  -0.5442   0.8552   2.4579  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -2.36957    0.62399  -3.797 0.000146 ***
+## studytime   -0.57481    0.16784  -3.425 0.000615 ***
+## failures     0.19303    0.16899   1.142 0.253334    
+## goout        0.70490    0.12039   5.855 4.77e-09 ***
+## freetime     0.07209    0.13531   0.533 0.594163    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 462.21  on 381  degrees of freedom
+## Residual deviance: 395.17  on 377  degrees of freedom
+## AIC: 405.17
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre><code>## (Intercept)   studytime    failures       goout    freetime 
+## -2.36956938 -0.57481413  0.19303395  0.70489610  0.07209276</code></pre>
+<pre><code>## Waiting for profiling to be done...</code></pre>
+<pre><code>##                     OR     2.5 %    97.5 %
+## (Intercept) 0.09352099 0.0267779 0.3109179
+## studytime   0.56280947 0.4007339 0.7752293
+## failures    1.21292398 0.8699068 1.6929038
+## goout       2.02363642 1.6081702 2.5811264
+## freetime    1.07475503 0.8240334 1.4026604</code></pre>
 <p>The summary shows that standard error for “studytime”, “failures”, “goout”, “freetime” are 0.79, 0.79, 0.74, 0.75, which are comparatively small. Smaller standard error indicates that sample mean and the population mean is more similar, which means that sample data has a stronger explanatory power to the population. The coefficient for “studytime”, “failures”, “goout”, “freetime” are -2.94, -2.18, -1.67, -2.3, which means that these variables are all highly correlated with Y(“high_use”).</p>
 <p>The odds ratio of “studytime” is 0.654（less than 1), “failures” is 1.34（higher than 1), “goout” is 2.114（higher than 1), “freetime” is 1.164（higher than 1), which means that “failures”, “goout”, “freetime” is positively associated with “high_use”. According to the confidence intervals,</p>
 <p>According to the above result, I now figure out that “failures”, “goout”, “freetime” are important variables, which are correlated with high/low alcohol consumption. Since the odds ratio of “studytime” is less than one, it isn’t a factor which has high relationship with high/low alcohol consumption.</p>
-<p><strong>Using the variables which has statistical relationship with high/low alcohol consumption to explore the predictive power of you model. </strong></p>
+<p><strong>3.Using the variables which has statistical relationship with high/low alcohol consumption to explore the predictive power of you model. </strong></p>
 <pre><code>##         prediction
 ## high_use FALSE TRUE
 ##    FALSE   248   22

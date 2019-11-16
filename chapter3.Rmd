@@ -5,6 +5,8 @@ date: "2019/11/16"
 output: html_document
 ---
 
+# Logistic regression
+
 ```{r echo = FALSE}
 # access dplyr and ggplot2
 library(dplyr); library(ggplot2); library(tidyr)
@@ -90,12 +92,4 @@ table(high_use = alc$high_use, prediction = probabilities > 0.5)
 ```
 
 Since I found that "studytime" isn't an important factor, I remove this variable, and predict a model. According to the confusion matrix, we can calculate the precision is 248/(248+76) = 0.77, and the recall is 248/ (248+22) = 0.92. This means that the model has high recall, low precision, which means that most of the positive examples are correctly recognized, but there are a lot of false positives.The average number of wrong predictions in training data is 0.2565445, and the average number of wrong predictions in the cross validation 0.2486911. This means that the error of the model is quite high(around 25%).
-
-
-**Bonus: Perform 10-fold cross-validation on your model. Does your model have better test set performance (smaller prediction error using 10-fold cross-validation) compared to the model introduced in DataCamp (which had about 0.26 error). Could you find such a model? **
-
-
-
-**Super-Bonus: Perform cross-validation to compare the performance of different logistic regression models (= different sets of predictors). Start with a very high number of predictors and explore the changes in the training and testing errors as you move to models with less predictors. Draw a graph displaying the trends of both training and testing errors by the number of predictors in the model. (0-4 points to compensate any loss of points from the above exercises)**
-
 
