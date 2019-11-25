@@ -35,3 +35,4 @@ human <- merge(hd, gii, by = "Country")
 dim(human)
 write.csv(human, file = "human.csv")
 read.csv("human.csv", sep="\t", header=TRUE)
+

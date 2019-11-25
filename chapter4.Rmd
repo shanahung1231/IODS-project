@@ -18,6 +18,7 @@ data("Boston")
 str(Boston)
 dim(Boston)
 ```
+
 Boston data (housing values in suburbs of Boston) has 506 observations and 14 variables. Variables include "crim"(per capita crime rate by town), "zn"(proportion of residential land zoned for lots over 25,000 sq.ft), "rm"(average number of rooms per dwelling). Through analyzing the data, we hope to understand what are the features which affect housing price. 
 
 
@@ -34,6 +35,7 @@ corrplot(cor_matrix, method="circle", type = "upper", cl.pos = "b", tl.pos = "d"
 
 summary(Boston)
 ```
+
 The correlation matrix shows the relationship between two variables. If the dot is blue, it means that the two variables are positively correlated; if the dot is red, it means that the two variables are negatively correlated. As the color gets darker (blue or red), it means that the two variables have a stronger correlation. The dot is white or almost white if the two variables have weak correlation or no correlation. For example, "rad" and "tax" have high positive correlation; "lstat" and "medv", "age" and "dis" have negative correlation. According to the summary, I see the minimum, maximum, mean, quartile value of each variable. For example, the average number of rooms per dwelling is 6.285, and the average crime rate 3.613.
 
 **3.Standardize the dataset and print out summaries of the scaled data.**
@@ -69,7 +71,8 @@ boston_scaled <- dplyr::select(boston_scaled, -crim)
 boston_scaled <- data.frame(boston_scaled, crime)
 ```
 
-**5.Divide the dataset to train and test sets, so that 80% of the data belongs to the train set.**
+**5.Divide the dataset to train and test sets, so that 80% of the data belongs to the train set, and fit the linear discriminant analysis on the train set.**
+
 ```{r echo = FALSE}
 # number of rows in the Boston dataset 
 n <- nrow(boston_scaled)
@@ -90,7 +93,7 @@ test <- dplyr::select(test, -crime)
 
 ```
 
-**6.Fit the linear discriminant analysis on the train set.**
+
 
 ```{r echo = FALSE}
 # linear discriminant analysis
@@ -117,7 +120,7 @@ plot(lda.fit, dimen = 2, col=classes, pch=classes)
 lda.arrows(lda.fit, myscale = 1)
 ```
 
-**7.Save the crime categories from the test set and then remove the categorical crime variable from the test dataset, then predict the classes with the LDA model on the test data.**
+**6.Save the crime categories from the test set and then remove the categorical crime variable from the test dataset, then predict the classes with the LDA model on the test data.**
 
 ```{r echo = FALSE}
 # predict classes with test data
@@ -126,9 +129,11 @@ lda.pred <- predict(lda.fit, newdata = test)
 # cross tabulate the results
 table(correct = correct_classes , predicted = lda.pred$class)
 ```
+
 The result of the cross tabulation shows the relation between the prediction and the correct answer. For example, there are 21 when the preidction is low and the correct answer is low, and there are 5 when the preidction is low and the correct answer is med_low.
 
-**8.Reload the Boston dataset and standardize the dataset, and calculate the distances between the observations. **
+**7.Reload the Boston dataset and standardize the dataset, and calculate the distances between the observations. **
+
 ```{r echo = FALSE}
 data('Boston')
 boston_scaled_new <- scale(Boston)
@@ -145,9 +150,11 @@ dist_man <- dist(boston_scaled_new, method = 'manhattan')
 summary(dist_man)
 
 ```
+
 I calculate the distance with Euclidean distance measure and Manhattan distance measure. According to the result, the value from Manhattan distance measure is larger than Euclidean distance measure.(e.g. the median of Euclidean distance measure is 4.8241, and the median of Manhattan distance measure is 13.5488.)
 
-**9.Run k-means algorithm on the dataset.Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters and interpret the results.**
+**8.Run k-means algorithm on the dataset.Investigate what is the optimal number of clusters and run the algorithm again. Visualize the clusters and interpret the results.**
+
 ```{r echo = FALSE}
 # k-means clustering
 km <-kmeans(boston_scaled_new, centers = 3)
@@ -172,5 +179,6 @@ km <-kmeans(boston_scaled_new, centers = 2)
 # plot the Boston dataset with clusters
 pairs(boston_scaled_new, col = km$cluster)
 ```
-The line chart shows that when the cluster is around 1.25, the total within sum of square is the highest.
+
+The visualization of clusters show the distribution of clusters of different variables. Since we set 3 clusters, there are three colors in each plots, representing each cluster. The line chart shows that when the cluster is around 1.25, the total within sum of square is the highest.
 
