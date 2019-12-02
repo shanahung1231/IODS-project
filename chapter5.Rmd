@@ -5,26 +5,146 @@ date: "2019/12/1"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# Dimensionality Reduction Techniques
+
+**1.Show a graphical overview of the data and show summaries of the variables in the data.**
+
+```{r echo = FALSE}
+human <- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human2.txt", sep=",", header=TRUE)
+library(GGally)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(FactoMineR)
+
+summary(human)
+
+# visualize the 'human_' variables
+ggpairs(human)
+
+# compute the correlation matrix and visualize it with corrplot
+cor(human)%>%corrplot()
 ```
 
-## R Markdown
+Human data includes 155 observations and 8 variables. The variables are "Edu2.FM",  "Labo.FM", "Edu.Exp", "Life.Exp", "GNI", "Mat.Mor", "Ado.Birth", "Parli.F".   
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+GGpairs shows the correlation between two variables, and I find that "Ado.Birth" and "Edu.Exp", "Ado.Birth" and "Life.Exp", "Mat.Mor" and "Edu.Exp", "Mat.Mor" and "Life.Exp" have high negative correlation; "Life.Exp" and "Edu.Exp", "Ado.Birth" and "Mat.Mor"have high positive correlation.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+Corplot shows a better visualization than ggpairs, it shows the correaltion between each two variabes with different color. The two variables are more negative correlated if the color is red, and they are more positive correlated if the color is blue. However, corplot only shows general relationship between two variables, it can't show the exact correlation.
 
-```{r cars}
-summary(cars)
+**2.Perform principal component analysis (PCA) on the not standardized human data.**
+
+```{r echo = FALSE}
+
+# perform principal component analysis (with the SVD method)
+pca_no_human <- prcomp(human)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_no_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+
+# create and print out a summary of pca_no_human
+s <- summary(pca_no_human)
+s
+
+# rounded percentages of variance captured by each PC
+pca_pr_no <- round(100*s$importance[2,], digits = 1) 
+
+# create object pc_lab_no to be used as axis labels
+pc_lab_no <- paste0(names(pca_pr_no), " (", pca_pr_no, "%)")
+
+# draw a biplot
+biplot(pca_no_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab[1], ylab = pc_lab[2])
+
 ```
 
-## Including Plots
+Since the variables are not standarized, the standard deviation is big, which means the value of the data is discreted. From the biplot, we can see that most data of the countries cluster together, the variables also have the same problem. 
 
-You can also embed plots, for example:
+**3.Standardize the variables in the human data and repeat the above analysis. Are the results different? Why or why not?**
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r echo = FALSE}
+
+# standardize the variables
+human_std <- scale(human)
+
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_std)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+
+# create and print out a summary of pca_human
+s <- summary(pca_human)
+s
+
+# rounded percentages of variance captured by each PC
+pca_pr <- round(100*s$importance[2,], digits = 1) 
+
+# create object pc_lab to be used as axis labels
+pc_lab <- paste0(names(pca_pr), " (", pca_pr, "%)")
+
+# draw a biplot
+biplot(pca_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab[1], ylab = pc_lab[2])
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The result before and after the data is standardized is different. Before the data is standardized, countries and other variables all gather together, which makes it hard to interpret; after the data is standardized, countries are more evenly distributed, and the other variables have more similar standard deviations( since the length of the arrows are almost the same).
+
+
+**4.Give your personal interpretations of the first two principal component dimensions based on the biplot drawn after PCA on the standardized human data.**
+
+After the human data is standardized, countries are distributed more evenly. The arrows shows the connections between the original features and the PC's(PC1, PC2).  The countries are placed on x and y coordinates defined by two PC's. The angle between arrows represents the correlation between the features. Small angle = high positive correlation. We can see that except the correlation between "Parli.F", "Labo.FM" and PC1, PC2, other variables all have high positive correlation with the PC's.
+
+The length of the arrows are proportional to the standard deviations of the features, from the plot, we can see that the variables have similar standard deviations.
+
+**5.Look at the structure and the dimensions of the  tea data and visualize it. Interpret the results of the MCA and draw at least the variable biplot of the analysis.**
+
+Tea dataset includes 300 observations and 6 variables,which are:
+
+ "Tea""  : Factor  3 levels "black","Earl Grey", "green"
+ "How""  : Factor  4 levels "alone","lemon", "milk ", "other"
+ "how"   : Factor  3 levels "tea bag","tea bag+unpackaged", "unpackaged"
+ "sugar" : Factor  2 levels "No.sugar","sugar"
+ "where" : Factor  3 levels "chain store", "chain store+tea shop", "tea shop"  
+ "lunch" : Factor  2 levels "lunch","Not.lunch"
+ 
+The summary shows the detail of the data. It shows the amount of each variables as below:
+
+        Tea         How                      how           sugar    
+ black    : 74   alone:195   tea bag           :170   No.sugar:155  
+ Earl Grey:193   lemon: 33   tea bag+unpackaged: 94   sugar   :145  
+ green    : 33   milk : 63   unpackaged        : 36                 
+                 other:  9  
+                 
+                  where           lunch    
+ chain store         :192   lunch    : 44  
+ chain store+tea shop: 78   Not.lunch:256  
+ tea shop            : 30     
+                                           
+ In tea variable, most data are "Earl Grey"(193); in How variable, most data are "alone"(195); in how variable, most data are "tea bag"(170); in sugar variable, most data are "No.sugar"(155); in where variable, most data are "chain store"(192);  in lunch variable, most data are "Not.lunch"(256)
+ 
+```{r echo = FALSE}
+data(tea)
+# column names to keep in the dataset
+keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
+
+# select the 'keep_columns' to create a new dataset
+tea_time <- select(tea, one_of(keep_columns))
+
+# visualize the dataset
+gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + geom_bar() + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+
+# multiple correspondence analysis
+mca <- MCA(tea_time, graph = FALSE)
+
+# summary of the model
+summary(mca)
+
+# visualize MCA
+plot(mca, invisible=c("ind"), habillage = "quali")
+
+```
+
+The visualization of the dataset visualize the summary, thus is easier for me to interpret the data. Next, I do multiple correspondence analysis. The summary shows the eigenvalues, individuals, categories and categorical variables. According to eigenvalues, we can see that Dim.1 and Dim.2 retain more percentage of variances than other dimensions. From v.test value in categories, the coordinate of "black", "Earl Grey", "green", "lemon", "milk", "tea bag", "tea bag+unpackaged", "unpackaged" is significantly different from zero (since the value is below/above ± 1.96). According to categorical variables, we can see that "how" and "Dim.1", "where" and "Dim.1",  have a stronger correlation.
+
+MCA biplot shows the possible variable pattern. The distance between variables show the similarity between variables. For example, "lemon" and "alone" are more similar than "lemon" and "other". 
+ 
