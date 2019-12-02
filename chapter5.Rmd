@@ -110,13 +110,13 @@ Tea dataset includes 300 observations and 6 variables,which are:
  
 The summary shows the detail of the data. It shows the amount of each variables as below:
 
-        Tea         How                      how           sugar    
+ Tea:           How:         how:                     sugar:    
  black    : 74   alone:195   tea bag           :170   No.sugar:155  
  Earl Grey:193   lemon: 33   tea bag+unpackaged: 94   sugar   :145  
  green    : 33   milk : 63   unpackaged        : 36                 
                  other:  9  
                  
-                  where           lunch    
+ where:                     lunch:    
  chain store         :192   lunch    : 44  
  chain store+tea shop: 78   Not.lunch:256  
  tea shop            : 30     
