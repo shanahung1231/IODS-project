@@ -54,7 +54,7 @@ pca_pr_no <- round(100*s$importance[2,], digits = 1)
 pc_lab_no <- paste0(names(pca_pr_no), " (", pca_pr_no, "%)")
 
 # draw a biplot
-biplot(pca_no_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab[1], ylab = pc_lab[2])
+biplot(pca_no_human, cex = c(0.8, 1), col = c("grey40", "deeppink2"), xlab = pc_lab_no[1], ylab = pc_lab_no[2])
 
 ```
 
