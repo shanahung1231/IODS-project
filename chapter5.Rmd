@@ -139,9 +139,6 @@ gather(tea_time) %>% ggplot(aes(value)) + facet_wrap("key", scales = "free") + g
 # multiple correspondence analysis
 mca <- MCA(tea_time, graph = FALSE)
 
-# summary of the model
-summary(mca)
-
 # visualize MCA
 plot(mca, invisible=c("ind"), habillage = "quali")
 ```
