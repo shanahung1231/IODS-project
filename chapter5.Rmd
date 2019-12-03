@@ -125,6 +125,8 @@ The summary shows the detail of the data. It shows the amount of each variables 
  
 ```{r echo = FALSE}
 data(tea)
+library(FactoMineR)
+library(corrplot)
 # column names to keep in the dataset
 keep_columns <- c("Tea", "How", "how", "sugar", "where", "lunch")
 
