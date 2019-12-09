@@ -52,14 +52,11 @@ names(RATSL)
 str(RATSL)
 summary(RATSL)
 
-BPRSL$weeks
 
 #BPRSL now has 360 observations and 5 variables. The variable are "treatment", 
 #"subject", "weeks", "bprs"," week".    
 #RTSL now has 176 observations and 5 variables. The variabels are  "ID", "Group", "WD", "Weight", "Time".  
 #Long form data combine all the "week", and 'WD' data together, combing then into one column.
 . 
-#point of the long form data and the crucial difference between the wide and the long
-#forms before proceeding the to Analysis exercise. 
 
 
