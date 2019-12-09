@@ -40,6 +40,7 @@ RATSL <- RATS %>% gather(key = WD, value = Weight, -ID, -Group) %>% mutate(Time 
 ```
 
 **Plot the RATS data **
+
 I draw two plots to show the result of different groups. X-axis is Time, and Y-axis is Weight. Each color represents each group.
 
 ```{r echo = FALSE}
@@ -52,10 +53,10 @@ The result shows that the data of each group are distributed separately. Group 1
 
 
 **The Golden Standardize **
+
 Since I want to see more clearly about the tracking phenomenon, I standardize values of each observation. Each line represents each group, the X-axis is Time, and Y-axis is standardized bprs. 
 
 ```{r echo = FALSE}
-RATSL
 # Standardize the variable bprs
 RATSL <- RATSL %>%
   group_by(Time) %>%
@@ -121,7 +122,6 @@ ggplot(RATSL8S, aes(x = Group, y = mean)) +
 RATSL8S1 <- RATSL8S %>% filter(mean < 550)
 RATSL8S2 <- RATSL8S1 %>% filter(mean > 250)
 
-RATSL8S
 ```
 
 According to the boxplot, I find that all the three groups have outlier, hence I filter them out from the dataset, to make the result more unbiased. On the other hand, since group 2 and group 3 have similar mean, and the mean of group 1 is very different from the other two group, I decide to do T test, to see whether the two groups (group 2, group 3) are similar or not.Therefore, I filter group 1 from the below t test.  
@@ -146,7 +146,6 @@ RATS_new <- filter(RATS, Group > 1)
 
 #remove ID=12 in RATS_new
 RATS_new <- RATS_new[-4,]
-RATS_new
 
 # Add the baseline from the original data as a new variable to the summary data
 RATSL8S4 <- RATSL8S3 %>% mutate(baseline = RATS_new$WD1)
